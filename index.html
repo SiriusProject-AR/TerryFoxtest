@@ -1,74 +1,94 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Terry Fox</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Terry Fox</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+  />
 
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background: #000;
-      }
-      .hint {
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #fff;
-        font-size: 13px;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 5px 10px;
-        border-radius: 999px;
-        z-index: 10;
-      }
-    </style>
-  </head>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
 
-  <body>
-    <div class="hint">
-      사진을 카메라에 비추고 화면을 탭하면 영상이 재생됩니다.
-    </div>
+    a-scene {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
 
-    <a-scene
-      mindar-image="imageTargetSrc: ./targets.mind;"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      embedded
-    >
+    .hint {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 13px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 999px;
+      z-index: 10;
+    }
+  </style>
+</head>
 
-      <a-assets>
-        <video
-          id="Terry Fox Video"
-          src="./videos/Terry Fox.mp4"
-          loop
-          playsinline
-          webkit-playsinline
-        ></video>
-      </a-assets>
+<body>
+  <div class="hint">사진을 카메라에 비추고 화면을 탭하면 영상이 재생됩니다.</div>
 
-      <a-camera look-controls="enabled: false"></a-camera>
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
+  >
 
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video
-          src="#marathonVideo"
-          width="1"
-          height="0.5625"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-    </a-scene>
+    <a-assets>
+      <!-- ID 통일: terryfoxmessage -->
+      <video
+        id="terryfoxmessage"
+        src="./videos/TerryFox.mp4"
+        loop
+        playsinline
+        webkit-playsinline
+      ></video>
+    </a-assets>
 
-    <script>
-      const video = document.querySelector("#marathonVideo");
-      document.addEventListener("click", () => {
-        video.play();
+    <a-camera look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-video
+        src="#terryfoxmessage"
+        width="1"
+        height="0.5625"
+        position="0 0 0"
+      ></a-video>
+    </a-entity>
+
+  </a-scene>
+
+  <script>
+    const video = document.querySelector("#terryfoxmessage");
+
+    document.addEventListener("click", () => {
+      if (!video) return;
+      video.play().catch((e) => {
+        console.log("Video play error:", e);
       });
-    </script>
-  </body>
+    });
+  </script>
+
+</body>
 </html>
